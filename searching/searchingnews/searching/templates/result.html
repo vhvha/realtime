@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="pagetitle"><h2>'{{ query }}'로 검색한 뉴스 결과</h2></div>
+
+    <ul>
+        {% for news_title in title_list %}
+            
+            <li><a href="{{ news_title.url }}">{{ news_title.title }}</a></li>
+        {% endfor %}
+    </ul>
+    <div class="homebutton"><a href="{% url 'home' %}">홈으로</a></div>
+{% endblock %}
