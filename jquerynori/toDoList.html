@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script
+      src="http://code.jquery.com/jquery-3.3.1.js"
+      integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+      integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="toDoList.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="title">
+        오늘의 할 일
+        <span>
+          <i id="plus" class="fas fa-plus"></i>
+          <i id="delete_all" class="far fa-trash-alt icon"></i>
+        </span>
+      </div>
+      <input type="text" id="input" />
+
+      <div class="list">
+        <div>
+          - 멋쟁이사자처럼 교안 짜기
+          <span>
+            <i class="far fa-trash-alt icon"></i>
+          </span>
+        </div>
+        <div>
+          - 기억심리학 과제하기
+          <span>
+            <i class="far fa-trash-alt icon"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // + 버튼 클릭 시, input fade 토글
+      $("#plus").click(function() {
+        $("#input").toggle();
+      });
+
+      // trash icon 클릭 시, 500ms 간 fadeOut 후 사라짐
+      $(".list").on("click", ".icon", function() {
+        $(this)
+          .parent()
+          .parent()
+          .fadeOut(500);
+      });
+      /////
+      //**바인딩을 꼭 해줘야, 새로 만든 '할일'에도 같은 이벤트 적용 가능-->.on() 사용-->$('상위요소').on("event", "해당되는 하위요소", 적용할 함수)
+
+      // 작성된 리스트 누르면 .complete라는 클래스 토글
+      $(".list").on(
+        "click",
+        "div",
+        function() {
+          $(this)
+            //.filter(" i ") --> 어떻게 .complete 클래스를 토글하는 것과 삭제를 따로따로 하지??
+            .toggleClass("complete");
+        } //왜 함수에 stopPropagation()을 붙이는 거지?? -->원래 event.Propagation() 인데, 함수..?
+      );
+
+      // 입력 후 엔터 입력 시, 새로운 리스트 생성
+
+      $("#input").keydown(function(event) {
+        if (event.keyCode === 13) {
+          let context = $("#input").val(); //.text()는 input값 못받아옴
+          if (context.length > 0) {
+            let realContext =
+              "<div>- " +
+              context +
+              "<span><i class='far fa-trash-alt icon'></i></span></div>";
+
+            $(".list").append(realContext); //-->$('')은 queryselectorall로 class가 list인 것을 리스트에 전부 싸잡아 넣는 것
+          }
+        }
+      });
+
+      // 상단의 trash 버튼 클릭 시, 완료된 리스트 모두 삭제
+      $("#delete_all").click(function() {
+        $(".list div").remove();
+      });
+    </script>
+  </body>
+</html>
